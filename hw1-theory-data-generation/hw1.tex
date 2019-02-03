@@ -1,0 +1,93 @@
+\documentclass[9pt,twocolumn]{article}
+
+\usepackage[margin=0.8in,bottom=1.25in,columnsep=.4in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{cite}
+
+\title{
+	50.039 Theory and Practice of Deep Learning\\
+	Theory Homework 1
+}
+
+\author{Joel Huang 1002530}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Drawing data from a distribution of $(x,y)$}
+\subsection*{Problem definition}
+\begin{itemize}
+\item We need to draw pairs of data $x$ and binary labels $y=0$ or $y=1$.
+\item There are two Gaussians with cluster index $c(x)=1$ and $c(x)=2$, each with a different probability of getting class $y=0$ and $y=1$.
+\item $x$ follows the Gaussian distributions of the two clusters.
+\end{itemize}
+
+\subsection*{Formulation}
+\begin{itemize}
+\item $x$ and $y$ are independent: $P(x,y)=P(x)\,P(y)$.
+\item $y$ is only dependent on cluster index $c(x)$. So $P(y\,|\,x,c(x))=P(y\,|\,c(x))$.
+\item $P(x)$ is the product of the distribution of the data points given the cluster, and the probability of choosing the cluster:
+\begin{equation*}
+\begin{split}
+	P(x) = & f(x\,|\,c(x))\,P(c(x))\\
+	= & f(x\,|\,c(x)=1)\,P(c(x)=1)\\
+	& + f(x\,|\,c(x)=2)\,P(c(x)=2)
+\end{split}
+\end{equation*}
+\item $P(y=0)$ is the product of the probability of generating label $y=0$ given the cluster, and the probability of choosing the cluster:
+\begin{equation*}
+\begin{split}
+	P(y=0) =&P(y=0\,|\,c(x)=1)\,P(c(x)=1) \\
+	       &+P(y=0\,|\,c(x)=2)\,P(c(x)=2)
+\end{split}
+\end{equation*}
+\item $P(y=1)$ can be expressed in terms of $P(y=0)$ because the labels are binary. Using the relationship $P(y=1\,|\,c(x)) = 1-P(y=0\,|\,c(x))$:
+\begin{equation*}
+\begin{split}
+	P(y=1) = &(1-P(y=0\,|\,c(x)=1))\,P(c(x)=1) \\
+	       & + (1-P(y=0\,|\,c(x)=2))\,P(c(x)=2)
+\end{split}
+\end{equation*}
+\end{itemize}
+
+\subsection*{Expressing $P(x,y)$}
+\begin{equation*}
+\begin{split}
+	P(x,y) & = P(x)P(y) \\
+	& =
+\begin{cases}
+	P(x)P(y=0),& \text{for} \,y=0\\
+	P(x)P(y=1),& \text{for} \,y=1\\
+	0         ,& \text{otherwise}
+\end{cases}
+\end{split}
+\end{equation*}
+For $y=0$,
+\begin{equation*}
+\begin{split}
+	P(x,y=0) = & P(x)P(y=0) \\
+	= & f(x\,|\,c(x))\,P(c(x))\\
+	& \,\cdot [(P(y=0\,|\,x,c(x)=1)\,P(c(x)=1)\\
+	& + P(y=0\,|\,x,c(x)=2)\,P(c(x)=2)]\\
+	= & [f(x\,|\,c(x)=1)\,P(c(x)=1)\\
+	& + f(x\,|\,c(x)=2)\,P(c(x)=2)]\\
+	& \,\cdot [0.2 \cdot P(c(x)=1) + 0.7 \cdot P(c(x)=2)]
+\end{split}
+\end{equation*}
+Similarly for $y=1$,
+\begin{equation*}
+\begin{split}
+	P(x,y=1) = & P(x)P(y=1) \\
+	= & f(x\,|\,c(x))\,P(c(x))\\
+	& \,\cdot [(1-(P(y=0\,|\,x,c(x)=1))\,P(c(x)=1)\\
+	& + (1-P(y=0\,|\,x,c(x)=2))\,P(c(x)=2)]\\
+	= & [f(x\,|\,c(x)=1)\,P(c(x)=1)\\
+	& + f(x\,|\,c(x)=2)\,P(c(x)=2)]\\
+	& \,\cdot [0.8 \cdot P(c(x)=1) + 0.3 \cdot P(c(x)=2)]
+\end{split}
+\end{equation*}
+\end{document}
