@@ -28,28 +28,27 @@
 
 \subsection*{Formulation}
 \begin{itemize}
-\item $x$ and $y$ are independent: $P(x,y)=P(x)\,P(y)$.
+\item $P(x,y)=P(y,x,c(x)=1)+P(y,x,c(x)=2)$.
 \item $y$ is only dependent on cluster index $c(x)$. So $P(y\,|\,x,c(x))=P(y\,|\,c(x))$.
-\item $P(x)$ is the product of the distribution of the data points given the cluster, and the probability of choosing the cluster:
+\item $P(x,c(x))$ can be decomposed into the product of the distribution of the data points given the cluster, and the probability of choosing the cluster:
 \begin{equation*}
-\begin{split}
-	P(x) = & f(x\,|\,c(x))\,P(c(x))\\
-	= & f(x\,|\,c(x)=1)\,P(c(x)=1)\\
-	& + f(x\,|\,c(x)=2)\,P(c(x)=2)
-\end{split}
+	P(x,c(x)=1) = f(x\,|\,c(x)=1)\,P(c(x)=1)
+\end{equation*}
+\begin{equation*}
+	P(x,c(x)=2) = f(x\,|\,c(x)=2)\,P(c(x)=2)
 \end{equation*}
 \item $P(y=0)$ is the product of the probability of generating label $y=0$ given the cluster, and the probability of choosing the cluster:
 \begin{equation*}
 \begin{split}
-	P(y=0) =&P(y=0\,|\,c(x)=1)\,P(c(x)=1) \\
-	       &+P(y=0\,|\,c(x)=2)\,P(c(x)=2)
+	P(y=0) =&P(y=0\,|\,x,c(x)=1)\,P(x,c(x)=1) \\
+	       &+P(y=0\,|\,x,c(x)=2)\,P(x,c(x)=2)
 \end{split}
 \end{equation*}
 \item $P(y=1)$ can be expressed in terms of $P(y=0)$ because the labels are binary. Using the relationship $P(y=1\,|\,c(x)) = 1-P(y=0\,|\,c(x))$:
 \begin{equation*}
 \begin{split}
-	P(y=1) = &(1-P(y=0\,|\,c(x)=1))\,P(c(x)=1) \\
-	       & + (1-P(y=0\,|\,c(x)=2))\,P(c(x)=2)
+	P(y=1) = &(1-P(y=0\,|\,x,c(x)=1))\,P(x,c(x)=1) \\
+	       & + (1-P(y=0\,|\,x,c(x)=2))\,P(x,c(x)=2)
 \end{split}
 \end{equation*}
 \end{itemize}
@@ -57,37 +56,33 @@
 \subsection*{Expressing $P(x,y)$}
 \begin{equation*}
 \begin{split}
-	P(x,y) & = P(x)P(y) \\
-	& =
-\begin{cases}
-	P(x)P(y=0),& \text{for} \,y=0\\
-	P(x)P(y=1),& \text{for} \,y=1\\
-	0         ,& \text{otherwise}
-\end{cases}
+P(x,y)&=P(y,x,c(x)=1)+P(y,x,c(x)=2)\\
+      &=P(y\,|\,x,c(x)=1)\,P(x,c(x)=1)\\
+	  &+P(y\,|\,x,c(x)=2)\,P(x,c(x)=2)\\
 \end{split}
 \end{equation*}
 For $y=0$,
 \begin{equation*}
 \begin{split}
-	P(x,y=0) = & P(x)P(y=0) \\
-	= & f(x\,|\,c(x))\,P(c(x))\\
-	& \,\cdot [(P(y=0\,|\,x,c(x)=1)\,P(c(x)=1)\\
-	& + P(y=0\,|\,x,c(x)=2)\,P(c(x)=2)]\\
-	= & [f(x\,|\,c(x)=1)\,P(c(x)=1)\\
-	& + f(x\,|\,c(x)=2)\,P(c(x)=2)]\\
-	& \,\cdot [0.2 \cdot P(c(x)=1) + 0.7 \cdot P(c(x)=2)]
+	P(x,y=0) = & P(y=0\,|\,x,c(x)=1)\,P(x,c(x)=1)\\
+	  &+P(y=0\,|\,x,c(x)=2)\,P(x,c(x)=2)\\
+	= & 0.2 \cdot f(x\,|\,c(x)=1)\,P(c(x)=1)\\
+	& + 0.7 \cdot f(x\,|\,c(x)=2)\,P(c(x)=2)\\
+		= & 0.2 \cdot 0.5 \cdot f(x\,|\,c(x)=1)\\
+	& + 0.7 \cdot 0.5 \cdot f(x\,|\,c(x)=2)
 \end{split}
 \end{equation*}
 Similarly for $y=1$,
 \begin{equation*}
 \begin{split}
-	P(x,y=1) = & P(x)P(y=1) \\
-	= & f(x\,|\,c(x))\,P(c(x))\\
-	& \,\cdot [(1-(P(y=0\,|\,x,c(x)=1))\,P(c(x)=1)\\
-	& + (1-P(y=0\,|\,x,c(x)=2))\,P(c(x)=2)]\\
-	= & [f(x\,|\,c(x)=1)\,P(c(x)=1)\\
-	& + f(x\,|\,c(x)=2)\,P(c(x)=2)]\\
-	& \,\cdot [0.8 \cdot P(c(x)=1) + 0.3 \cdot P(c(x)=2)]
+	P(x,y=1)=&P(y=1\,|\,x,c(x)=1)\,P(x,c(x)=1)\\
+	  &+P(y=1\,|\,x,c(x)=2)\,P(x,c(x)=2)\\
+     =&(1-P(y=0\,|\,x,c(x)=1))\,P(x,c(x)=1)\\
+     &+(1-P(y=0\,|\,x,c(x)=2))\,P(x,c(x)=2)\\
+	= & 0.8 \cdot f(x\,|\,c(x)=1)\,P(c(x)=1)\\
+	& + 0.3 \cdot f(x\,|\,c(x)=2)\,P(c(x)=2)\\
+	= & 0.8 \cdot 0.5 \cdot f(x\,|\,c(x)=1)\\
+	& + 0.3 \cdot 0.5 \cdot f(x\,|\,c(x)=2)
 \end{split}
 \end{equation*}
 \end{document}

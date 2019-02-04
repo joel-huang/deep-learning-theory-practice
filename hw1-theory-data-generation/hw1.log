@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.8.23)  3 FEB 2019 19:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.8.23)  4 FEB 2019 13:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -250,42 +250,55 @@ File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 24.
 
-! Undefined control sequence.
-<argument> ... f(x\,|\,c(x))\,P(c(x))\\ & \,\Cdot 
-                                                  [P(y=0\,|\,c(x)=1)\,P(c(x)...
-l.72 \end{split}
-                
-? 
-! Emergency stop.
-<argument> ... f(x\,|\,c(x))\,P(c(x))\\ & \,\Cdot 
-                                                  [P(y=0\,|\,c(x)=1)\,P(c(x)...
-l.72 \end{split}
-                
-End of file on the terminal!
+Overfull \hbox (2.25511pt too wide) detected at line 46
+[]
+ []
 
- 
+
+Overfull \hbox (20.00003pt too wide) detected at line 46
+[]
+ []
+
+
+Overfull \hbox (27.25507pt too wide) detected at line 53
+[]
+ []
+
+
+Overfull \hbox (20.00003pt too wide) detected at line 53
+[]
+ []
+
+
+Overfull \hbox (17.41472pt too wide) detected at line 87
+[]
+ []
+
+[1{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+
+]
+(./hw1.aux) ) 
 Here is how much of TeX's memory you used:
- 3615 strings out of 494587
- 48189 string characters out of 6177424
- 118953 words of memory out of 5000000
- 7241 multiletter control sequences out of 15000+600000
+ 3618 strings out of 494587
+ 48218 string characters out of 6177424
+ 120953 words of memory out of 5000000
+ 7240 multiletter control sequences out of 15000+600000
  12442 words of font info for 49 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 27i,23n,32p,295b,239s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
-14 hyphenation exceptions out of 8191
- 27i,8n,32p,295b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
-n exceptions out of 8191
- 27i,8n,32p,295b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
-/public/amsfonts/cm/cmr17.p
-fb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pf
-b>
-Output written on hw1.pdf (1 page, 88370 bytes).
+ 27i,15n,32p,295b,231s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmbx12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
+2.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.
+pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
+fb>
+Output written on hw1.pdf (1 page, 81155 bytes).
 PDF statistics:
- 40 PDF objects out of 1000 (max. 8388607)
- 28 compressed objects within 1 object stream
+ 36 PDF objects out of 1000 (max. 8388607)
+ 25 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
