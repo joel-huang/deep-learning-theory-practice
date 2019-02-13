@@ -1,0 +1,127 @@
+\documentclass[9pt]{article}
+
+\usepackage[margin=0.8in,bottom=1.25in,columnsep=.4in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{cite}
+\usepackage{multicol}
+
+\title{
+	50.039 Theory and Practice of Deep Learning\\
+	Theory Homework 3
+}
+
+\author{Joel Huang 1002530}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Cross Entropy Loss Gradient}
+Let $h(x_i) = s(w\cdot x_i)$. Then
+\begin{equation*}
+	L = (-1)\cdot\sum_{i=1}^n y_i \log(s(w\cdot x_i)) + (1-y_i) \log(1 - s(w\cdot x_i))
+\end{equation*}
+\begin{equation*}
+	\nabla_w L = \nabla_w \left ((-1) \sum_{i=1}^n y_i \log(s(w\cdot x_i)) + (1-y_i) \log(1 - s(w\cdot x_i)) \right )
+\end{equation*}
+Applying chain rule,
+\begin{equation*}
+\nabla_w L = (-1) \sum_{i=1}^n y_i \left(\left(\dfrac{\partial}{\partial w}(\log(s(w \cdot x_i)))\cdot\dfrac{\partial}{\partial w}(w \cdot x_i)\right) + \left((1-y_i) \dfrac{\partial}{\partial w}(\log(1 - s(w \cdot x_i)))\cdot\dfrac{\partial}{\partial w}(w \cdot x_i)\right)\right)
+\end{equation*}
+Using the relationship $\dfrac{\partial \log (s(w\cdot x_i))}{\partial w}=1-s(w \cdot x_i)$ and $\dfrac{\partial \log (1- s(w\cdot x_i))}{\partial w}=-s(w \cdot x_i)$,
+\begin{equation*}
+\nabla_w L = (-1) \sum_{i=1}^n \left(y_i (1 - s(w \cdot x_i))(x_i) + (1-y_i) (-s(w \cdot x_i))(x_i) \right)
+\end{equation*}
+\begin{equation*}
+\nabla_w L = (-1) \sum_{i=1}^n \left((x_i)(y_i - s(w \cdot x_i)(y_i)) + (x_i)(-s(w \cdot x_i) + s(w \cdot x_i)(y_i)) \right)
+\end{equation*}
+\begin{equation*}
+\nabla_w L = (-1) \sum_{i=1}^n x_i(y_i - s(w \cdot x_i)(y_i) -s(w \cdot x_i) + s(w \cdot x_i)(y_i))
+\end{equation*}
+Finally,
+\begin{equation*}
+\nabla_w L = \sum_{i=1}^n x_i(s(w\cdot x_i)-y_i) = \sum_{i=1}^n x_i(h(x_i)-y_i)
+\end{equation*}
+
+\twocolumn
+\section{Einsum notation}
+\subsection*{Matrix-vector multiplication}
+\begin{equation*}
+	C_{j,k} = \sum_i A_{ijk}b_i
+\end{equation*}
+Einsum: $ijk,i\rightarrow jk$
+\begin{equation*}
+	C_{j} = \sum_{i,k} A_{ijk}b_{ik}
+\end{equation*}
+Einsum: $ijk,ik\rightarrow j$
+
+\subsection*{Sum over dimensions}
+\begin{equation*}
+	A_{ik} = \sum_{j,l} A_{ijkl}
+\end{equation*}
+Einsum: $ijkl\rightarrow ik$
+\begin{equation*}
+	A_{ki} = \sum_{j,l} A_{ijkl}
+\end{equation*}
+Einsum: $ijkl\rightarrow ki$
+\begin{equation*}
+	C_{i} = \sum_{j,k} A_{ijk}A_{ijk}
+\end{equation*}
+Einsum: $ijk,ijk\rightarrow i$
+\begin{equation*}
+	C=x^{\top}Ax
+\end{equation*}
+Einsum:?
+
+\section{Tensor broadcasting}
+\begin{enumerate}
+\item $(3,1,2,3)$ and $(5,3)$ are not broadcastable.
+\begin{itemize}
+	\item Fill smaller tensor from the left: $(1,1,5,3)$
+	\item The sizes in the third dimension (2 and 5) are incompatible.
+\end{itemize}
+
+\item $(3,2,1,3,4)$ and $(5,3,4)$ are broadcastable.
+\begin{itemize}
+	\item Fill smaller tensor from the left: $(1,1,5,3,4)$
+	\item The sizes in the third dimension (1 and 5) are compatible.
+	\item $(1,1,5,3,4)$ is copied till its shape is $(3,2,5,3,4)$.
+\end{itemize}
+
+\item $(3,2,1,3,4)$ and $(5,1,4)$ are broadcastable.
+\begin{itemize}
+	\item Fill smaller tensor from the left: $(1,1,5,1,4)$
+	\item The sizes in the third dimension (1 and 5) are compatible.
+	\item The sizes in the fourth dimension (3 and 1) are compatible
+	\item $(1,1,5,1,4)$ is copied till its shape is $(3,2,5,3,4)$.
+\end{itemize}
+
+\item $(3,2,1,3,2)$ and $(5,3,1)$ are broadcastable.
+\begin{itemize}
+	\item Fill smaller tensor from the left: $(1,1,5,3,1)$
+	\item The sizes in the third dimension (1 and 5) are compatible.
+	\item The sizes in the fifth dimension (2 and 1) are compatible
+	\item $(1,1,5,3,1)$ is copied till its shape is $(3,2,5,3,2)$.
+\end{itemize}
+
+\item $(3,2,1,3,2)$ and $(1,3,1,2)$ are broadcastable.
+\begin{itemize}
+	\item Fill smaller tensor from the left: $(1,1,3,1,2)$
+	\item The sizes in the third dimension (1 and 3) are compatible.
+	\item The sizes in the fourth dimension (3 and 1) are compatible.
+	\item $(1,1,3,1,2)$ is copied till its shape is $(3,2,3,3,2)$.
+\end{itemize}
+
+\item $(7,1)$ and $(7)$ are broadcastable.
+\begin{itemize}
+	\item Fill smaller tensor from the left: $(1,7)$
+	\item The sizes in the first dimension (7 and 1) are compatible.
+	\item The sizes in the second dimension (1 and 7) are compatible.
+	\item $(1,7)$ is copied till its shape is $(7,7)$.
+\end{itemize}
+
+\end{enumerate}
+\end{document}

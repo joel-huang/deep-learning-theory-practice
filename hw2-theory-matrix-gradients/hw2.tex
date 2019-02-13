@@ -1,0 +1,118 @@
+\documentclass[9pt,twocolumn]{article}
+
+\usepackage[margin=0.8in,bottom=1.25in,columnsep=.4in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{cite}
+
+\title{
+	50.039 Theory and Practice of Deep Learning\\
+	Theory Homework 2
+}
+
+\author{Joel Huang 1002530}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Linear Algebra}
+\subsection*{Matrix inverse}
+\begin{equation*}
+	XA+A^{\top} = I
+\end{equation*}
+\begin{equation*}
+	XA = I - A^{\top}
+\end{equation*}
+Taking the inverse of A on both sides,
+\begin{equation*}
+	XAA^{-1} = (I-A^{\top})A^{-1}
+\end{equation*}
+\begin{equation*}
+	XI = IA^{-1}-A^{T}A^{-1}
+\end{equation*}
+\begin{equation*}
+	X = (1-A^{\top})A^{-1}
+\end{equation*}
+
+\subsection*{Matrix inverse and transpose}
+$C-2A^{\top}$ is invertible.
+\begin{equation*}
+	X^{\top}C = [2A(X+B)]^{\top}
+\end{equation*}
+\begin{equation*}
+	X^{\top}C = 2A^{\top}X^{\top}+2A^{\top}B^{\top}
+\end{equation*}
+\begin{equation*}
+	X^{\top}C - 2A^{\top}X^{\top} = 2A^{\top}B^{\top}
+\end{equation*}
+\begin{equation*}
+	X^{\top}(C - 2A^{\top}) = 2(AB)^{\top}
+\end{equation*}
+\begin{equation*}
+	X^{\top}(C - 2A^{\top})(C - 2A^{\top})^{-1} = 2(AB)^{\top}(C - 2A^{\top})^{-1}
+\end{equation*}
+\begin{equation*}
+	X = (2(AB)^{\top}(C - 2A^{\top})^{-1})^{\top}
+\end{equation*}
+
+\subsection*{Matrix inverse}
+\begin{equation*}
+	(Ax-y)^{\top}A=0
+\end{equation*}
+\begin{equation*}
+	(Ax-y)^{\top}=0^{\top}
+\end{equation*}
+\begin{equation*}
+	Ax = y
+\end{equation*}
+In order to remove $A$ from the left side, the inverse of $A$ must be defined, $A^{-1}$.
+\begin{equation*}
+	x = A^{-1}y
+\end{equation*}
+
+\subsection*{Positive definiteness and invertibility}
+Any positive definite matrix is invertible.
+\begin{equation*}
+	(Ax-y)^{\top}A = -x^{\top}B
+\end{equation*}
+\begin{equation*}
+	x^{\top}A^{\top}A-y^{\top}A = -x^{\top}B
+\end{equation*}
+\begin{equation*}
+	x^{\top}A^{\top}A + x^{\top}B = y^{\top}A
+\end{equation*}
+\begin{equation*}
+	x^{\top}(A^{\top}A+B) = y^{\top}A
+\end{equation*}
+In the case where $A$ is invertible,
+\begin{equation*}
+	Ax \neq 0
+\end{equation*}
+Necessarily, $A^{\top}A$ is positive definite, as per the definition of a positive definite matrix:
+\begin{equation*}
+	x^{\top}A^{\top}Az > 0
+\end{equation*}
+\begin{equation*}
+	(Ax)^{\top}(Ax)>0
+\end{equation*}
+Since $A^{\top}A$ is positive definite, and $B$ is positive definite, then $(A^{\top}A+B)$ is also positive definite, and therefore invertible.
+\begin{equation*}
+	x^{\top}(A^{\top}A+B)(A^{\top}A+B)^{-1} = y^{\top}A(A^{\top}A+B)^{-1}
+\end{equation*}
+\begin{equation*}
+	x^{\top} = y^{\top}A(A^{\top}A+B)^{-1}
+\end{equation*}
+\begin{equation*}
+	x = (y^{\top}A(A^{\top}A+B)^{-1})^{\top}
+\end{equation*}
+
+\section{Directional derivative}
+For a function $f:\mathbb{R}^n \mapsto \mathbb{R}^1$, and some arbitrary direction $v$, the directional derivative $\nabla f(x) \cdot v$ can be seen as a projection along $v$. We need to choose the right $v$ such that the maximum value of $\nabla f(x) \cdot v$ is achieved. Using the geometric definition of the dot product,
+\begin{equation*}
+	\nabla f(x) \cdot v = \lVert \nabla f(x) \rVert \, \lVert v \rVert cos(\theta)
+\end{equation*}
+where $\theta$ is the angle between the gradient and $v$. This function is at its maximum when $cos(\theta)=1$, which implies $\theta=0^\circ$. $\nabla f(x)$ is indeed codirectional with $v$.
+\end{document}
