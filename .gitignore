@@ -3,3 +3,4 @@ feats
 .ipynb_checkpoints
 *.aux
 *.log
+*.pt
