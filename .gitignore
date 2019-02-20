@@ -1,6 +1,7 @@
 data
 feats
 .ipynb_checkpoints
+__pycache__
 *.aux
 *.log
 *.pt

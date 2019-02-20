@@ -52,29 +52,37 @@ Finally,
 \begin{equation*}
 	C_{j,k} = \sum_i A_{ijk}b_i
 \end{equation*}
-Einsum: $ijk,i\rightarrow jk$
+Einsum: $ijk,i\rightarrow jk, [A,b]$
 \begin{equation*}
 	C_{j} = \sum_{i,k} A_{ijk}b_{ik}
 \end{equation*}
-Einsum: $ijk,ik\rightarrow j$
+Einsum: $ijk,ik\rightarrow j, [A,b]$
 
 \subsection*{Sum over dimensions}
 \begin{equation*}
 	A_{ik} = \sum_{j,l} A_{ijkl}
 \end{equation*}
-Einsum: $ijkl\rightarrow ik$
+Einsum: $ijkl\rightarrow ik, [A]$
 \begin{equation*}
 	A_{ki} = \sum_{j,l} A_{ijkl}
 \end{equation*}
-Einsum: $ijkl\rightarrow ki$
+Einsum: $ijkl\rightarrow ki, [A]$
 \begin{equation*}
 	C_{i} = \sum_{j,k} A_{ijk}A_{ijk}
 \end{equation*}
-Einsum: $ijk,ijk\rightarrow i$
+Einsum: $ijk,ijk\rightarrow i, [A,A]$
 \begin{equation*}
 	C=x^{\top}Ax
 \end{equation*}
-Einsum:?
+Einsum: $i,ij,j\rightarrow, [x,A,x]$
+\begin{equation*}
+	C=AG^{\top}B, A\in \mathbb{R}^{d\times e}, G \in \mathbb{R}^{f\times e}, B\in \mathbb{R}^{f\times l}
+\end{equation*}
+Einsum: $ij,kj,kl\rightarrow il, [A, G,B]$
+\begin{equation*}
+	C_{????} = \sum_{cd} A_{abcd}B_{bcde}E_{cdef}
+\end{equation*}
+Einsum: $abcd,bcde,cdef\rightarrow abef, [A,B,E]$
 
 \section{Tensor broadcasting}
 \begin{enumerate}
