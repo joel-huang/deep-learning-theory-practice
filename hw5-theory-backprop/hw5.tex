@@ -1,0 +1,100 @@
+\documentclass[twocolumn, 9pt]{article}
+
+\usepackage[margin=0.8in,bottom=1.25in,columnsep=.4in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{cite}
+\usepackage{multicol}
+
+\newcommand{\del}{\partial}
+
+\title{
+	50.039 Theory and Practice of Deep Learning\\
+	Theory Homework 5
+}
+
+\author{Joel Huang 1002530}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Backpropagation}
+\subsection*{Neural network I}
+\begin{enumerate}
+	\item
+		\begin{equation*}
+			\dfrac{\del E}{\del n_4} = \dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_4}
+		\end{equation*}
+	\item
+		\begin{equation*}
+			\dfrac{\del E}{\del w_{2,5}} = \dfrac{\del E}{\del n_7} \cdot \dfrac{\del n_7}{\del n_5} \cdot \dfrac{\del n_5}{\del w_{5,2}}
+		\end{equation*}
+	\item
+		\begin{equation*}
+		\begin{split}
+			\dfrac{\del E}{\del (v_{1,1})_d} = &\dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_4} \cdot \dfrac{\del n_4}{\del n_1} \cdot \dfrac{\del n_1}{\del (v_{1,1})_d}\\
+			+ &\dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_3} \cdot \dfrac{\del n_3}{\del n_1} \cdot \dfrac{\del n_1}{\del (v_{1,1})_d}
+		\end{split}
+		\end{equation*}
+	\item
+		\begin{equation*}
+		\begin{split}
+			\dfrac{\del E}{\del (x_2)_d} = &\dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_4} \cdot \dfrac{\del n_4}{\del n_2} \cdot \dfrac{\del n_2}{\del (x_2)_d}\\
+			+ &\dfrac{\del E}{\del n_7} \cdot \dfrac{\del n_7}{\del n_5} \cdot \dfrac{\del n_5}{\del n_2} \cdot \dfrac{\del n_2}{\del (x_2)_d}
+		\end{split}
+		\end{equation*}
+\end{enumerate}
+\subsection*{Neural network II}
+\begin{enumerate}
+	\item
+		\begin{equation*}
+		\begin{split}
+			\dfrac{\del E}{\del (v_{2,2})_d} = &\dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_4} \cdot \dfrac{\del n_4}{\del n_2} \cdot \dfrac{\del n_2}{\del (v_{2,2})_d}\\
+			+ &\dfrac{\del E}{\del n_8} \cdot \dfrac{\del n_8}{\del n_4} \cdot \dfrac{\del n_4}{\del n_2} \cdot \dfrac{\del n_2}{\del (v_{2,2})_d}
+		\end{split}
+		\end{equation*}
+	\item
+		\begin{equation*}
+		\begin{split}
+			\dfrac{\del E}{\del w_{2,4}} = &\dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_4} \cdot \dfrac{\del n_4}{\del w_{2,4}}\\
+			+ &\dfrac{\del E}{\del n_8} \cdot \dfrac{\del n_8}{\del n_4} \cdot \dfrac{\del n_4}{\del w_{2,4}}
+		\end{split}
+		\end{equation*}
+	\item
+		\begin{equation*}
+		\begin{split}
+			\dfrac{\del E}{\del n_1} = &\dfrac{\del E}{\del n_6} \cdot \dfrac{\del n_6}{\del n_3} \cdot \dfrac{\del n_3}{\del n_1}\\
+			+ &\dfrac{\del E}{\del n_7} \cdot \dfrac{\del n_7}{\del n_5} \cdot \dfrac{\del n_5}{\del n_1}\\
+			+ &\dfrac{\del E}{\del n_8} \cdot \dfrac{\del n_8}{\del n_3} \cdot \dfrac{\del n_3}{\del n_1}
+		\end{split}
+		\end{equation*}
+\end{enumerate}
+\section{Number of products in a path}
+When calculating the gradient for a fixed neuron, the number of terms in a product corresponding to a single path from $E$ to an arbitrary neuron in layer $k>1$ is $k$. Consider the base case where $k=2$, for neurons $z_k$ in layers $k=1,2$ connected via a single path. Then, the gradient product has two terms:
+\begin{equation*}
+	\dfrac{\del E}{\del z_2} = \dfrac{\del E}{\del z_1} \cdot \dfrac{\del z_1}{\del z_2}
+\end{equation*}
+
+For any value of $k$, the gradient with respect to that neuron is given by a product of $k$ partials:
+\begin{equation*}
+	\dfrac{\del E}{\del z_k} = \dfrac{\del E}{\del z_1} \cdot \dfrac{\del z_1}{\del z_2} \cdots \dfrac{\del z_{k-1}}{\del z_k}
+\end{equation*}
+
+Then for $k+1$, a similar result is observed, with a product of $k+1$ partials:
+\begin{equation*}
+	\dfrac{\del E}{\del z_{k+1}} = \dfrac{\del E}{\del z_1} \cdot \dfrac{\del z_1}{\del z_2} \cdots \dfrac{\del z_{k}}{\del z_{k+1}}
+\end{equation*}
+
+By induction, the number of gradient products is equal to $k$ for all $k>1$.
+\section{Convolutional parameters}
+For a convolutional layer with a square filter of size $f$, depth $d$ and channels $c$, the number of parameters is $f^2 \times d \times c + c$.
+\begin{enumerate}
+	\item $64 \times 64 \times 2 \times 96 + 96 = 786528$
+	\item $6 \times 6 \times 2 \times 96 + 96 = 7008$
+	\item $1 \times 1 \times 2 \times 96 + 96 = 288$
+\end{enumerate}
+
+\end{document} 
