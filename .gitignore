@@ -1,5 +1,6 @@
 data
 feats
+checkpoints
 .ipynb_checkpoints
 __pycache__
 *.aux
