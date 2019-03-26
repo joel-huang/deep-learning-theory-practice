@@ -1,0 +1,102 @@
+\documentclass[9pt]{article}
+
+\usepackage[margin=0.8in,bottom=1.25in,columnsep=.4in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{cite}
+\usepackage{multicol}
+
+\newcommand{\del}{\partial}
+
+\title{
+	50.039 Theory and Practice of Deep Learning\\
+	Theory Homework 6
+}
+
+\author{Joel Huang 1002530}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Cell state and hidden state}
+Is $c_{t-1}$ a function of $h_{t-1}$? The previous cell state
+$c_{t-1}$ is carried over from the previous LSTM cell. $h_{t-1}$,
+the hidden state carried over from the previous LSTM cell, is used
+to compute $c_{t}$, the cell state for the current cell; therefore
+only $c_{t}$ is a function of $h_{t-1}$, and $c_{t-1}$ never is.
+
+\section*{Hidden state derivative}
+Taking the derivative of the output hidden state equation for time $t$,
+\begin{equation*}
+	h_t = o_t \circ \tanh(c_t)
+\end{equation*}
+\begin{equation*}
+	\frac{\del h_t}{\del h_{t-1}} = \tanh(c_t)\circ\frac{\del o_t}{\del h_{t-1}} + o_t\circ\frac{\del \tanh(c_t)}{\del h_{t-1}}
+\end{equation*}
+Since
+\begin{equation*}
+	\tanh(c_t) = \tanh(f_t \circ c_{t-1} + i_t \circ u_t),
+\end{equation*}
+
+\begin{equation*}
+	\frac{\del \tanh(c_t)}{\del h_{t-1}} = (1 - \tanh^2(c_t)) \left( f_t\circ\frac{\del c_{t-1}}{\del h_{t-1}} + c_{t-1}\circ\frac{\del f_t}{\del h_{t-1}} + u_t\circ\frac{\del i_t}{\del h_{t-1}} + i_t\circ\frac{\del u_t}{\del h_{t-1}}\right)
+\end{equation*}
+And since in the previous section we show that $c_{t-1}$ is not a function of $h_{t-1}$,
+\begin{equation*}
+	\frac{\del \tanh(c_t)}{\del h_{t-1}} = (1 - \tanh^2(c_t)) \left( c_{t-1}\circ\frac{\del f_t}{\del h_{t-1}} + u_t\circ\frac{\del i_t}{\del h_{t-1}} + i_t\circ\frac{\del u_t}{\del h_{t-1}}\right)
+\end{equation*}
+Substituting all values found, we have
+\begin{equation*}
+	\frac{\del h_t}{\del h_{t-1}} = \tanh(c_t)\,\circ\,\frac{\del o_t}{\del h_{t-1}}\,+\,o_t\,\circ\,\left[(1 - \tanh^2(c_t)) \left( c_{t-1}\circ\frac{\del f_t}{\del h_{t-1}} + u_t\circ\frac{\del i_t}{\del h_{t-1}} + i_t\circ\frac{\del u_t}{\del h_{t-1}}\right)\right]
+\end{equation*}
+
+\section*{Sigmoid derivative}
+\begin{equation*}
+	\sigma(z) = \frac{1}{1+e^{-z}} = (1+e^{-z})^{-1}
+\end{equation*}
+\begin{equation*}
+\begin{split}
+	\sigma'(z) &= e^{-z}\cdot(1+e^{-z})^{-2}\\
+	           &= \frac{e^{-z}}{1+e^{-z}}\cdot\frac{1}{1+e^{-z}}\\
+	           &= \left(\frac{1+e^{-z}}{1+e^{-z}} - \frac{1}{1+e^{-z}}\right)\cdot\sigma(z)\\
+	           &= \left(1 - \sigma(z)\right)\cdot\sigma(z)\\
+\end{split}
+\end{equation*}
+
+\section*{Forget gate derivative}
+\begin{equation*}
+	f_t = \sigma(W_{f}{x_{t}} + U_{f}{h_{t-1}})
+\end{equation*}
+\begin{equation*}
+\begin{split}
+	\frac{\del f_t}{\del h_{t-1}} = & \,U_{f} \cdot \sigma'(W_{f}{x_{t}} + U_{f}{h_{t-1}})\\
+	                              = & \,U_{f} \cdot [\,\left(1 - \sigma(W_{f}{x_{t}} + U_{f}{h_{t-1}})\right)\,\cdot\\
+	                                & \sigma(W_{f}{x_{t}} + U_{f}{h_{t-1}})\,]\\
+\end{split}
+\end{equation*}
+
+\section*{Forget gate activation}
+Which vector $h_{t-1}$ among all the vectors of euclidean length 1 maximize the values of $f_t^{(d)}$?
+\begin{equation*}
+	\operatorname*{argmax}_{h_{t-1}:\lVert h_{t-1} \rVert_2 = 1} f_t^{(d)}
+\end{equation*}
+\begin{equation*}
+	\operatorname*{argmax}_{h_{t-1}:\lVert h_{t-1} \rVert_2 = 1}\,\sigma(W_{f}^{(d)}\cdot{x_{t}} + U_{f}^{(d)}\cdot{h_{t-1}})
+\end{equation*}
+The logistic function is monotonic, so maximizing $f_t^{(d)}$ is equivalent to maximizing $U_{f}^{(d)}\cdot{h_{t-1}}$. Let $\theta$ be the angle between the two vectors $U_{f}^{(d)},{h_{t-1}}$. Since $\lVert h_{t-1}\rVert=1$ and $x_t=0$:
+\begin{equation*}
+\begin{split}
+	\operatorname*{argmax}_{h_{t-1}:\lVert h_{t-1} \rVert_2 = 1} U_{f}^{(d)}\cdot{h_{t-1}} & = \operatorname*{argmax}_{h_{t-1}:\lVert h_{t-1} \rVert_2 = 1} \, \lVert U_f^{(d)} \rVert \lVert h_{t-1} \rVert \cos\,(\theta)\\
+                                                                                     & = \operatorname*{argmax}_\theta \, \lVert U_f^{(d)} \rVert \cos\,(\theta)
+\end{split}
+\end{equation*}
+The value of $\theta$ that maximizes $\lVert U_f^{(d)} \rVert \cos(\theta)$ is 0. Given some $U_f^{(d)}\neq0$ and $x_t=0$, $f_t^{(d)}$ attains its maximum at $\lVert U_f^{(d)} \rVert$ when $\theta=0$, subject to $\lVert h_{t-1} \rVert = 1$. Therefore the greatest activation of the forget gate component $f_t^{(d)}$, when no bias is used, is acheieved when $h_{t-1}$ is aligned with weight vector $U_f^{(d)}$. The direction where $\theta=0$ is:
+\begin{equation*}
+	\hat{h}_{t-1} = \frac{h_{t-1}}{\lVert h_{t-1} \rVert} = \frac{U_f^{(d)}}{\lVert U_f^{(d)} \rVert}
+\end{equation*}
+
+Given $x_t=0$, $W_{f}^{(d)} \cdot {x_{t}}$ does not affect the $\operatorname*{argmax}$ nor the $\operatorname*{max}$, as the expression $\operatorname*{argmax}_{h_{t-1}:\lVert h_{t-1} \rVert_2 = 1}\,\sigma(W_{f}^{(d)}\cdot{x_{t}} + U_{f}^{(d)}\cdot{h_{t-1}})$ reduces to $\operatorname*{argmax}_{h_{t-1}:\lVert h_{t-1} \rVert_2 = 1}\,\sigma(U_{f}^{(d)}\cdot{h_{t-1}})$ when $W_{f}^{(d)}\cdot{x_{t}} = 0$.
+\end{document}
