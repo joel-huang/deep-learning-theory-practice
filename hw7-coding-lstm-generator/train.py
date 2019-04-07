@@ -18,7 +18,7 @@ from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_se
 torch.cuda.manual_seed_all(17)
 random.seed(17)
 
-device = torch.device("cuda:1")
+device = torch.device("cuda:0")
 valid_chars = string.ascii_letters + string.digits + """ .,:;"'()[]!?+=/"""
 num_chars = len(valid_chars) + 2
 
@@ -254,7 +254,6 @@ start_letters = 'ABCDEFGHIJKLMNOPRSTUVWZ'
 max_sampling_length = 500
 temperature = 0.5
 
-%matplotlib inline
 import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.rcParams.update({'font.size': 20})
